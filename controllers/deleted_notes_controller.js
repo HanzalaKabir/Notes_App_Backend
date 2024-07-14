@@ -48,4 +48,17 @@ const deletedNotes = async (req, res) => {
   }
 };
 
-module.exports = deletedNotes;
+const getDeletedNotes = async (req, res) => {
+  const AllNotes = await deleted_notes_schema.findOne({
+    username: req.body.username,
+  });
+  //console.log(username);
+  if (AllNotes) {
+    // console.log(note);
+    res.status(200).json(AllNotes.deletedNote);
+  } else {
+    res.status(404).json({ msg: "User does not exists" });
+  }
+};
+
+module.exports = { deletedNotes, getDeletedNotes };
