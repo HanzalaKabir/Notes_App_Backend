@@ -53,11 +53,11 @@ const createUser = async (req, res) => {
         if (dupName && dupEmail && dupNumber) {
           res.status(400).json({ msg: "User already exists, please login" });
         } else if (dupName) {
-          res.status(400).json({ message: "Username already exists" });
+          res.status(400).json({ msg: "Username already exists" });
         } else if (dupEmail) {
-          res.status(400).json({ message: "Email already exists" });
+          res.status(400).json({ msg: "Email already exists" });
         } else if (dupNumber) {
-          res.status(400).json({ message: "Number already exists" });
+          res.status(400).json({ msg: "Number already exists" });
         } else {
           res.status(400).json({
             msg: "Username, email, or number already exists",
