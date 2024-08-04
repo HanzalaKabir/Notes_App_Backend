@@ -1,18 +1,13 @@
 const user_model = require("../model/user_model");
 const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
-const { default: mongoose } = require("mongoose");
 
 const findUser = async (req, res) => {
-  // const session=await mongoose.startSession();
-  // session.startTransaction();
-
   try {
     console.log(req.body);
     const user = await user_model.findOne({ username: req.body.username });
 
     if (!user) {
-      //session.endSession();
       res.status(401).json({
         msg: "User not found, please check your credentials or SignUp",
       });
@@ -46,6 +41,7 @@ const findUser = async (req, res) => {
 const verifyToken = async (req, res, next) => {
   const token = req.header("Authorization");
   if (!token) return res.status(401).json({ error: "No token provided" });
+
   try {
     const decoded = jwt.verify(token, process.env.SECRET_KEY);
     const number = decoded.number;
