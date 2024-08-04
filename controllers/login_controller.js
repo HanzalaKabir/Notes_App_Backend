@@ -1,32 +1,41 @@
 const user_model = require("../model/user_model");
 const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
+const { default: mongoose } = require("mongoose");
 
 const findUser = async (req, res) => {
+  // const session=await mongoose.startSession();
+  // session.startTransaction();
+
   try {
     console.log(req.body);
-    const user = await user_model.findOne({ number: req.body.number });
+    const user = await user_model.findOne({ username: req.body.username });
+
     if (!user) {
+      //session.endSession();
       res.status(401).json({
         msg: "User not found, please check your credentials or SignUp",
       });
-    }
-    const decryptedPassword = CryptoJS.AES.decrypt(
-      user.password,
-      process.env.PASSWORD_SECRET_KEY
-    ).toString(CryptoJS.enc.Utf8);
-    if (decryptedPassword === req.body.password) {
-      const token = jwt.sign(
-        { number: user.number, username: user.username },
-        process.env.SECRET_KEY,
-        {
-          expiresIn: "5h",
-        }
-      );
-      res.status(200).json({ msg: "Authentication Successful", token: token });
-      console.log(token);
-    } else {
-      return res.status(401).json({ msg: "Incorrect password" });
+    } else if (user) {
+      const decryptedPassword = CryptoJS.AES.decrypt(
+        user.password,
+        process.env.PASSWORD_SECRET_KEY
+      ).toString(CryptoJS.enc.Utf8);
+      if (decryptedPassword === req.body.password) {
+        const token = jwt.sign(
+          { number: user.number, username: user.username },
+          process.env.SECRET_KEY,
+          {
+            expiresIn: "5h",
+          }
+        );
+        res
+          .status(200)
+          .json({ msg: "Authentication Successful", token: token });
+        console.log(token);
+      } else {
+        return res.status(401).json({ msg: "Incorrect password" });
+      }
     }
   } catch (error) {
     console.error(error);
