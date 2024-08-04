@@ -40,7 +40,7 @@ const createUser = async (req, res) => {
       await newNote.save({ session });
       await session.commitTransaction();
       session.endSession();
-      res.status(201).json({ message: "User created successfully", newUser });
+      res.status(201).json({ msg: "User created successfully", newUser });
     } catch (err) {
       await session.abortTransaction();
       session.endSession();
@@ -51,9 +51,7 @@ const createUser = async (req, res) => {
         const dupNumber = await User.findOne({ number: userObject.number });
 
         if (dupName && dupEmail && dupNumber) {
-          res
-            .status(400)
-            .json({ message: "User already exists, please login" });
+          res.status(400).json({ msg: "User already exists, please login" });
         } else if (dupName) {
           res.status(400).json({ message: "Username already exists" });
         } else if (dupEmail) {
@@ -62,17 +60,17 @@ const createUser = async (req, res) => {
           res.status(400).json({ message: "Number already exists" });
         } else {
           res.status(400).json({
-            message: "Username, email, or number already exists",
+            msg: "Username, email, or number already exists",
             err,
           });
         }
       } else {
-        res.status(400).json({ message: "Could not save user or note", err });
+        res.status(400).json({ msg: "Could not save user or note", err });
       }
     }
   } catch (err) {
     console.error("Unexpected error:", err);
-    res.status(500).json({ message: "Server error", err });
+    res.status(500).json({ msg: "Server error", err });
   }
 };
 
