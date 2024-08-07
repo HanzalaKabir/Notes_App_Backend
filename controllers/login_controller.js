@@ -47,8 +47,8 @@ const verifyToken = async (req, res, next) => {
     const number = decoded.number;
     const username = decoded.username;
     //console.log(req.body.username, username);
-    if (username !== req.body.username)
-      return res.status(401).json({ error: "Invalid token" });
+    // if (username !== req.body.username)
+    //   return res.status(401).json({ error: "Invalid token" });
     const user = await user_model.findOne({ number, username });
     if (!user) return res.status(401).json({ error: "Invalid token" });
     next();

@@ -1,7 +1,8 @@
 const Notes = require("../model/notes_model");
 
 const getAllNotes = async (req, res) => {
-  const AllNotes = await Notes.findOne({ username: req.body.username });
+  console.log(req.query.username);
+  const AllNotes = await Notes.findOne({ username: req.query.username });
   //console.log(username);
   if (AllNotes) {
     // console.log(note);
