@@ -39,6 +39,9 @@ const findUser = async (req, res) => {
 };
 
 const verifyToken = async (req, res, next) => {
+  if (req.method === "OPTIONS") {
+    return next();
+  }
   const token = req.header("Authorization");
   if (!token) return res.status(401).json({ error: "No token provided" });
 
