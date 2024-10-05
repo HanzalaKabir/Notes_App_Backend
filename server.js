@@ -11,7 +11,14 @@ const deletedNotes_router = require("./routes/deletedNotes_router");
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: true, // Allow all origins
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"], // Specify allowed methods
+    credentials: true, // Allow credentials if needed (like cookies or authorization headers)
+  })
+);
+
 app.use(express.json());
 connectDB();
 
