@@ -19,10 +19,7 @@ const findUser = async (req, res) => {
       if (decryptedPassword === req.body.password) {
         const token = jwt.sign(
           { number: user.number, username: user.username },
-          process.env.SECRET_KEY,
-          {
-            expiresIn: "5h",
-          }
+          process.env.SECRET_KEY
         );
         res
           .status(200)
